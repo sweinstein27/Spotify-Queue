@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
 import SpotifyWebApi from 'spotify-web-api-js';
+import $ from 'jquery';
 const spotifyApi = new SpotifyWebApi();
+var trackID;
 
 class App extends Component {
   constructor(){
@@ -32,6 +34,7 @@ class App extends Component {
   getNowPlaying(){
     spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
+        trackID = response.item.id
         this.setState({
           nowPlaying: { 
               name: response.item.name, 
@@ -41,8 +44,44 @@ class App extends Component {
       })
   }
 
+  getAudioDetails() {
+    const Url = "https://api.spotify.com/v1/audio-analysis/" + `${trackID}`
+    $.ajax({
+      url: Url,
+      headers: {
+        'Authorization': `Bearer BQBheTXPuSakucnQgGzsS2-Y5phZ9HVxKuvY7aAJ6aN7c2m67jvkaI5WgY2uOgwRusy0iCOzbQ4tY1grqA4j4W9tQ3dxuvy_4ZXtejKkMIsfPb0BQ3E0zMWnApK4qpVrxrzgwDlO2WoAwc6yVz-991tjQcs0Kb_KF3L_sMyio6tM1A-mlepJr7__vljAEQ`,
+    },
+      type: "GET",
+      contentType: JSON,
+      success: function(data){
+        debugger
+        console.log(data)
+      },
+      error: function(error){
+        debugger
+        console.log(`Error ${error}`)
+      }
+    })
+  }
+
   getPause() {
-    spotifyApi.pause().then(response => console.log(response))
+    const Url = "https://api.spotify.com/v1/me/player/pause"
+
+    $.ajax({
+      url: Url,
+      headers: {
+        'Authorization': `Bearer BQBheTXPuSakucnQgGzsS2-Y5phZ9HVxKuvY7aAJ6aN7c2m67jvkaI5WgY2uOgwRusy0iCOzbQ4tY1grqA4j4W9tQ3dxuvy_4ZXtejKkMIsfPb0BQ3E0zMWnApK4qpVrxrzgwDlO2WoAwc6yVz-991tjQcs0Kb_KF3L_sMyio6tM1A-mlepJr7__vljAEQ`,
+    },
+      type: "PUT",
+      contentType: JSON,
+      success: function(response){
+        alert("Paused")
+      },
+      error: function(error){
+        console.log("broken")
+      }
+
+    })
   }
 
   render() {
@@ -60,6 +99,11 @@ class App extends Component {
             Check Now Playing
           </button>
         }
+        <div>
+          <button onClick={() => this.getAudioDetails()}>
+            Audio Details
+          </button>
+        </div>
         <div>
           <button onClick={() => this.getPause()}>
             Pause
