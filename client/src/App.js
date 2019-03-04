@@ -6,6 +6,7 @@ import $ from 'jquery';
 const spotifyApi = new SpotifyWebApi();
 var trackID;
 var ID;
+var trackProgress;
 
 class App extends Component {
   constructor(){
@@ -36,6 +37,7 @@ class App extends Component {
     spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
         trackID = response.item.id
+        trackProgress = response.progress_ms
         this.setState({
           nowPlaying: { 
               name: response.item.name, 
@@ -46,7 +48,7 @@ class App extends Component {
   }
 
   getAudioDetails() {
-    const Url = "https://api.spotify.com/v1/audio-analysis/" + `${trackID}`
+    var Url = "https://api.spotify.com/v1/audio-analysis/" + `${trackID}`
     $.ajax({
       url: Url,
       headers: {
@@ -67,23 +69,6 @@ class App extends Component {
 
   getPause() {
     spotifyApi.pause()
-    // const Url = "https://api.spotify.com/v1/me/player/pause"
-
-    // $.ajax({
-    //   url: Url,
-    //   headers: {
-    //     'Authorization': `Bearer BQBheTXPuSakucnQgGzsS2-Y5phZ9HVxKuvY7aAJ6aN7c2m67jvkaI5WgY2uOgwRusy0iCOzbQ4tY1grqA4j4W9tQ3dxuvy_4ZXtejKkMIsfPb0BQ3E0zMWnApK4qpVrxrzgwDlO2WoAwc6yVz-991tjQcs0Kb_KF3L_sMyio6tM1A-mlepJr7__vljAEQ`,
-    // },
-    //   type: "PUT",
-    //   contentType: JSON,
-    //   success: function(response){
-    //     alert("Paused")
-    //   },
-    //   error: function(error){
-    //     console.log("broken")
-    //   }
-
-    // })
   }
 
   getPlay(){
@@ -97,10 +82,33 @@ class App extends Component {
     })
   }
   
-  createPlaylist(){
-    spotifyApi.createPlaylist(ID)
-    .then((response) => {
-      debugger
+  skipSong(){
+    spotifyApi.skipToNext()
+  }
+
+  previousSong(){
+    spotifyApi.skipToPrevious()
+  }
+
+  seek(){
+    var newPosition = trackProgress + 30000
+    var Url = "https://api.spotify.com/v1/me/player/seek?" + `${newPosition}`
+    debugger
+    $.ajax({
+    url: Url,
+    headers: {
+      'Authorization': `Bearer BQC-zEiiGd9aEerVLTY1QfNjRk8SHAGgvhMvf5x0khUH5gy2wN6jqWFAwO1oiz5hL-_gwkjkyxwMHIN7aY4TIJrnyeIRWu3CzTTfccWjcaAw4yRmkAzhT36q_ZtBu1QVby7WB3KrBsyVyZXjT9UO35hK6-q415OFEJdAWxGYTIvXxZelWDPppp5nZhkIfA`,
+    },
+      type: "PUT",
+      contentType: JSON,
+      success: function(data){
+        debugger
+        console.log(data)
+      },
+      error: function(error){
+        debugger
+        console.log(`Error is ${error}`)
+      }
     })
   }
 
@@ -135,8 +143,18 @@ class App extends Component {
           </button>
         </div>
         <div>
-          <button onClick={() => this.createPlaylist()}>
-            Create Playlist
+          <button onClick={() => this.skipSong()}>
+            Next Song
+          </button>
+        </div>
+        <div>
+          <button onClick={() => this.previousSong()}>
+            Previous Song
+          </button>
+        </div>
+        <div>
+          <button onClick={() => this.seek()}>
+            Seek Forward
           </button>
         </div>
         <div>
@@ -144,6 +162,7 @@ class App extends Component {
             User Info
           </button>
         </div>
+        
       </div>
       
     );
