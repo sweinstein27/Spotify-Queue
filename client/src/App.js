@@ -52,7 +52,7 @@ class App extends Component {
     $.ajax({
       url: Url,
       headers: {
-        'Authorization': `Bearer BQBheTXPuSakucnQgGzsS2-Y5phZ9HVxKuvY7aAJ6aN7c2m67jvkaI5WgY2uOgwRusy0iCOzbQ4tY1grqA4j4W9tQ3dxuvy_4ZXtejKkMIsfPb0BQ3E0zMWnApK4qpVrxrzgwDlO2WoAwc6yVz-991tjQcs0Kb_KF3L_sMyio6tM1A-mlepJr7__vljAEQ`,
+        'Authorization': `Bearer BQCWJeRaXoSvaOOjwbWIYWNJIdg0GG5099lHo3qEtDeAAC3VfKyMVcLnYB2q-DhhlXZ_RvqsQkmgKDfKzLZaxMDg5zbmce92pmu-rccer7P7DtGiqjtwfZVoKb-MUgpkH45-W_YD1Gp-PISqsyvVRCCLKiDUX-bh1dTs-krkX8qPdSHHh0nr_L7M_ljAUw`,
     },
       type: "GET",
       contentType: JSON,
@@ -97,7 +97,7 @@ class App extends Component {
     $.ajax({
     url: Url,
     headers: {
-      'Authorization': `Bearer BQC-zEiiGd9aEerVLTY1QfNjRk8SHAGgvhMvf5x0khUH5gy2wN6jqWFAwO1oiz5hL-_gwkjkyxwMHIN7aY4TIJrnyeIRWu3CzTTfccWjcaAw4yRmkAzhT36q_ZtBu1QVby7WB3KrBsyVyZXjT9UO35hK6-q415OFEJdAWxGYTIvXxZelWDPppp5nZhkIfA`,
+      'Authorization': `Bearer BQCWJeRaXoSvaOOjwbWIYWNJIdg0GG5099lHo3qEtDeAAC3VfKyMVcLnYB2q-DhhlXZ_RvqsQkmgKDfKzLZaxMDg5zbmce92pmu-rccer7P7DtGiqjtwfZVoKb-MUgpkH45-W_YD1Gp-PISqsyvVRCCLKiDUX-bh1dTs-krkX8qPdSHHh0nr_L7M_ljAUw`,
     },
       type: "PUT",
       contentType: JSON,
@@ -106,6 +106,25 @@ class App extends Component {
       },
       error: function(error){
         console.log(`Error is ${error}`)
+      }
+    })
+  }
+
+  search(){
+    $.ajax({
+      url: "https://api.spotify.com/v1/search?q=abba&type=track&market=US&offset=0",
+      headers: {
+        'Authorization': `Bearer BQCWJeRaXoSvaOOjwbWIYWNJIdg0GG5099lHo3qEtDeAAC3VfKyMVcLnYB2q-DhhlXZ_RvqsQkmgKDfKzLZaxMDg5zbmce92pmu-rccer7P7DtGiqjtwfZVoKb-MUgpkH45-W_YD1Gp-PISqsyvVRCCLKiDUX-bh1dTs-krkX8qPdSHHh0nr_L7M_ljAUw`,
+      },
+      type: "GET",
+      contentType: JSON,
+      success: function(data){
+        debugger
+        console.log("success")
+      },
+      error: function(data){
+        console.log(data.responseText)
+        debugger
       }
     })
   }
@@ -153,6 +172,11 @@ class App extends Component {
         <div>
           <button onClick={() => this.seek()}>
             Seek Forward
+          </button>
+        </div>
+        <div>
+          <button onClick={() => this.search()}>
+            Search
           </button>
         </div>
         <div>
