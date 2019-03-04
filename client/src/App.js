@@ -41,7 +41,8 @@ class App extends Component {
         this.setState({
           nowPlaying: { 
               name: response.item.name, 
-              albumArt: response.item.album.images[0].url
+              albumArt: response.item.album.images[0],
+              trackProgress: response.progress_ms
             }
         });
       })
@@ -52,17 +53,22 @@ class App extends Component {
     $.ajax({
       url: Url,
       headers: {
-        'Authorization': `Bearer BQCWJeRaXoSvaOOjwbWIYWNJIdg0GG5099lHo3qEtDeAAC3VfKyMVcLnYB2q-DhhlXZ_RvqsQkmgKDfKzLZaxMDg5zbmce92pmu-rccer7P7DtGiqjtwfZVoKb-MUgpkH45-W_YD1Gp-PISqsyvVRCCLKiDUX-bh1dTs-krkX8qPdSHHh0nr_L7M_ljAUw`,
+        'Authorization': `Bearer BQDhzJuJwO6NANcHxRNrMgVliQypH2ydZf1ZRWfjWhDCHBzNGVNyOgle-CH9av4oZG7eOQRGMSsMIuQmuBIBL983h_oDwBQAUwgT2lpdiuPQps7jeyeJZezs3rIm5nw5fA-Np_VvoC4_S_1yzRA3vPJ-zntlk9W69a0gzayNYQxT84g3IIcrorzVCJoI6Q`,
     },
       type: "GET",
       contentType: JSON,
       success: function(data){
-        debugger
+        this.setState({
+          trackData: {
+            key: data.track.key,
+            bpm: data.track.tempo
+          }
+        })
         console.log(data)
       },
-      error: function(error){
+      error: function(data){
         debugger
-        console.log(`Error ${error}`)
+        console.log(data.responseText)
       }
     })
   }
@@ -137,6 +143,9 @@ class App extends Component {
           Now Playing: { this.state.nowPlaying.name }
         </div>
         <div>
+          Current Possition: { this.state.nowPlaying.trackProgress}
+        </div>
+        <div>
           <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }}/>
         </div>
         { this.state.loggedIn &&
@@ -148,6 +157,10 @@ class App extends Component {
           <button onClick={() => this.getAudioDetails()}>
             Audio Details
           </button>
+          {/* <div>
+          Key: { this.state.trackData.key }  "NA"
+          BPM: { this.state.trackData.bpm } "NA"
+          </div> */}
         </div>
         <div>
           <button onClick={() => this.getPlay()}>
