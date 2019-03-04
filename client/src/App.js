@@ -92,7 +92,7 @@ class App extends Component {
 
   seek(){
     var newPosition = trackProgress + 30000
-    var Url = "https://api.spotify.com/v1/me/player/seek?" + `${newPosition}`
+    var Url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + `${newPosition}`
     debugger
     $.ajax({
     url: Url,
@@ -102,11 +102,9 @@ class App extends Component {
       type: "PUT",
       contentType: JSON,
       success: function(data){
-        debugger
-        console.log(data)
+        console.log("success")
       },
       error: function(error){
-        debugger
         console.log(`Error is ${error}`)
       }
     })
