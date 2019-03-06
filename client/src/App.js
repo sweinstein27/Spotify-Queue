@@ -7,6 +7,8 @@ const spotifyApi = new SpotifyWebApi();
 var trackID;
 var ID;
 var trackProgress;
+var searchObject;
+
 
 class App extends Component {
   constructor(){
@@ -18,7 +20,12 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '' }
+      nowPlaying: { name: 'Not Checked', albumArt: '' },
+      trackData: {
+        key: "",
+        bpm: ""
+      },
+      searchObject: []
     }
   }
   getHashParams() {
@@ -53,24 +60,34 @@ class App extends Component {
     $.ajax({
       url: Url,
       headers: {
-        'Authorization': `Bearer BQDhzJuJwO6NANcHxRNrMgVliQypH2ydZf1ZRWfjWhDCHBzNGVNyOgle-CH9av4oZG7eOQRGMSsMIuQmuBIBL983h_oDwBQAUwgT2lpdiuPQps7jeyeJZezs3rIm5nw5fA-Np_VvoC4_S_1yzRA3vPJ-zntlk9W69a0gzayNYQxT84g3IIcrorzVCJoI6Q`,
-    },
+        'Authorization': `Bearer BQByggrgsr3qkJI4WZ6DVoubKcx-OEKrHEsCL7UBCmv6-4ghvpK0ppaNvzN0JjmHt4vOmuX35SrOkNsbwT4XxXi3-mByEuyltQIaYnj753otzuNAcbofX9vhZnpORioeAh9IcaOtU0jq9pYl518VHJoBqZWecWZ1y_jwhPMNRZ9R4XtogaZEHE5jDXQSzQ`,
+      },
       type: "GET",
       contentType: JSON,
-      success: function(data){
-        this.setState({
-          trackData: {
-            key: data.track.key,
-            bpm: data.track.tempo
-          }
-        })
-        console.log(data)
-      },
-      error: function(data){
-        debugger
-        console.log(data.responseText)
-      }
+      // success: function(data){
+      //   this.setState({
+      //     trackData: {
+      //       key: data.track.key,
+      //       bpm: data.track.tempo
+      //     }
+      //   })
+      //   debugger
+      //   console.log(data)
+      // },
+      // error: function(data){
+      //   debugger
+      //   console.log(data.responseText)
+      // }
     })
+    .then ((response) => {
+      this.setState({
+        trackData: {
+          key: response.track.key,
+          bpm: response.track.tempo
+        }
+      })
+    })
+    debugger
   }
 
   getPause() {
@@ -117,23 +134,24 @@ class App extends Component {
   }
 
   search(){
+    var trackID;
+    var name;
     $.ajax({
       url: "https://api.spotify.com/v1/search?q=abba&type=track&market=US&offset=0",
       headers: {
-        'Authorization': `Bearer BQCWJeRaXoSvaOOjwbWIYWNJIdg0GG5099lHo3qEtDeAAC3VfKyMVcLnYB2q-DhhlXZ_RvqsQkmgKDfKzLZaxMDg5zbmce92pmu-rccer7P7DtGiqjtwfZVoKb-MUgpkH45-W_YD1Gp-PISqsyvVRCCLKiDUX-bh1dTs-krkX8qPdSHHh0nr_L7M_ljAUw`,
+        'Authorization': `Bearer BQAbBP3AqP3CWrFfjlTsx_ZcBOB-u6pATvPdL-RP8z2mAMiHlwy0N1FVzjNgMuqawWYHFM8d6R6o_5AGxidUoCjiOwsqzCMMkcSPXCY6SRwNASdaLqvlHv99kjIQR9lptsy66cWfCGCn6-wqx6gL_h8DAL8-Y2rgZztayGZSapHHqZNPhBjnIhu6ug8frQ`,
       },
       type: "GET",
       contentType: JSON,
-      success: function(data){
-        debugger
-        console.log("success")
-      },
-      error: function(data){
-        console.log(data.responseText)
-        debugger
-      }
     })
+    .then ((data) => {
+      searchObject = data.tracks.items
+      
+    })
+    
   }
+
+  
 
   render() {
     return (
@@ -144,6 +162,12 @@ class App extends Component {
         </div>
         <div>
           Current Possition: { this.state.nowPlaying.trackProgress}
+        </div>
+        <div>
+          Key: { this.state.trackData.key }  
+        </div>
+        <div>
+          BPM: { this.state.trackData.bpm } 
         </div>
         <div>
           <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }}/>
@@ -157,10 +181,6 @@ class App extends Component {
           <button onClick={() => this.getAudioDetails()}>
             Audio Details
           </button>
-          {/* <div>
-          Key: { this.state.trackData.key }  "NA"
-          BPM: { this.state.trackData.bpm } "NA"
-          </div> */}
         </div>
         <div>
           <button onClick={() => this.getPlay()}>
@@ -188,9 +208,10 @@ class App extends Component {
           </button>
         </div>
         <div>
-          <button onClick={() => this.search()}>
+          <button onClick={() => this.search()} search={this.state.searchObject}>
             Search
           </button>
+            Search Results: { this.state.searchObject }
         </div>
         <div>
           <button onClick={() => this.me()}>
