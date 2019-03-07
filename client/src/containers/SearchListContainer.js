@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../Search.css';
 import axios from 'axios'
 import SpotifyWebApi from 'spotify-web-api-js';
 import $ from 'jquery';
+import SearchList from '../components/SearchList'
+import Search from '../components/Search'
+
 const spotifyApi = new SpotifyWebApi();
 var trackID;
 var ID;
@@ -10,7 +13,7 @@ var trackProgress;
 var searchObject;
 
 
-class App extends Component {
+class SearchListContainer extends Component {
   constructor(){
     super();
     const params = this.getHashParams();
@@ -134,23 +137,24 @@ class App extends Component {
   }
 
   search(){
-    var trackID;
-    var name;
     $.ajax({
       url: "https://api.spotify.com/v1/search?q=abba&type=track&market=US&offset=0",
       headers: {
-        'Authorization': `Bearer BQAbBP3AqP3CWrFfjlTsx_ZcBOB-u6pATvPdL-RP8z2mAMiHlwy0N1FVzjNgMuqawWYHFM8d6R6o_5AGxidUoCjiOwsqzCMMkcSPXCY6SRwNASdaLqvlHv99kjIQR9lptsy66cWfCGCn6-wqx6gL_h8DAL8-Y2rgZztayGZSapHHqZNPhBjnIhu6ug8frQ`,
+        'Authorization': `Bearer BQAmeZe1EqIGGLpvPPpyZJa4SZEsI3Veo_vjr3v5vgecNiUooj7CvwiKBEkPQH8wH-HGREOuVa_kCNkqc6jbtCYuMO85RBL2hffNTVRR5nDvrTgUUCqDxSUr30YYccumi4-5mCLxvz_9pBf3k_YUAHKL98jTlvfBkAxf_B_8i4e_96bhITT8TRVIX9tnlA`,
       },
       type: "GET",
       contentType: JSON,
     })
     .then ((data) => {
-      searchObject = data.tracks.items
-      
+        this.setState({
+            searchObject: data.tracks.items
+        })
     })
-    
-  }
+    }
 
+    componentDidMount(){
+        this.search()
+    }
   
 
   render() {
@@ -208,10 +212,10 @@ class App extends Component {
           </button>
         </div>
         <div>
-          <button onClick={() => this.search()} search={this.state.searchObject}>
+          <button onClick={() => this.search()}>
             Search
           </button>
-            Search Results: { this.state.searchObject }
+            <SearchList searchObject={this.state.searchObject} />
         </div>
         <div>
           <button onClick={() => this.me()}>
@@ -225,4 +229,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default SearchListContainer;
