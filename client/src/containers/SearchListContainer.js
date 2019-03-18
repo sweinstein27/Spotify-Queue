@@ -11,13 +11,14 @@ var trackID;
 var ID;
 var trackProgress;
 var searchObject;
+var token
 
 
 class SearchListContainer extends Component {
   constructor(){
     super();
     const params = this.getHashParams();
-    const token = params.access_token;
+    token = params.access_token;
     if (token) {
       spotifyApi.setAccessToken(token);
     }
@@ -63,7 +64,7 @@ class SearchListContainer extends Component {
     $.ajax({
       url: Url,
       headers: {
-        'Authorization': `Bearer BQByggrgsr3qkJI4WZ6DVoubKcx-OEKrHEsCL7UBCmv6-4ghvpK0ppaNvzN0JjmHt4vOmuX35SrOkNsbwT4XxXi3-mByEuyltQIaYnj753otzuNAcbofX9vhZnpORioeAh9IcaOtU0jq9pYl518VHJoBqZWecWZ1y_jwhPMNRZ9R4XtogaZEHE5jDXQSzQ`,
+        'Authorization': `Bearer ${token}`,
       },
       type: "GET",
       contentType: JSON,
@@ -123,7 +124,7 @@ class SearchListContainer extends Component {
     $.ajax({
     url: Url,
     headers: {
-      'Authorization': `Bearer BQCWJeRaXoSvaOOjwbWIYWNJIdg0GG5099lHo3qEtDeAAC3VfKyMVcLnYB2q-DhhlXZ_RvqsQkmgKDfKzLZaxMDg5zbmce92pmu-rccer7P7DtGiqjtwfZVoKb-MUgpkH45-W_YD1Gp-PISqsyvVRCCLKiDUX-bh1dTs-krkX8qPdSHHh0nr_L7M_ljAUw`,
+      'Authorization': `Bearer ${token}`,
     },
       type: "PUT",
       contentType: JSON,
@@ -140,7 +141,7 @@ class SearchListContainer extends Component {
     $.ajax({
       url: "https://api.spotify.com/v1/search?q=abba&type=track&market=US&offset=0",
       headers: {
-        'Authorization': `Bearer BQAmeZe1EqIGGLpvPPpyZJa4SZEsI3Veo_vjr3v5vgecNiUooj7CvwiKBEkPQH8wH-HGREOuVa_kCNkqc6jbtCYuMO85RBL2hffNTVRR5nDvrTgUUCqDxSUr30YYccumi4-5mCLxvz_9pBf3k_YUAHKL98jTlvfBkAxf_B_8i4e_96bhITT8TRVIX9tnlA`,
+        'Authorization': `Bearer ${token}`,
       },
       type: "GET",
       contentType: JSON,
