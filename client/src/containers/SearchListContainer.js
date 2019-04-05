@@ -29,7 +29,8 @@ class SearchListContainer extends Component {
         key: "",
         bpm: ""
       },
-      searchObject: []
+      searchObject: [],
+      selectedSongID: ""
     }
   }
   getHashParams() {
@@ -147,11 +148,16 @@ class SearchListContainer extends Component {
       contentType: JSON,
     })
     .then ((data) => {
+      debugger
         this.setState({
             searchObject: data.tracks.items
         })
     })
-    }
+  }
+
+  songInfo(object){
+   debugger
+  }
 
     componentDidMount(){
         this.search()
@@ -214,9 +220,17 @@ class SearchListContainer extends Component {
         </div>
         <div>
           <button onClick={() => this.search()}>
-            Search
+            Find Song
           </button>
-            <SearchList searchObject={this.state.searchObject} />
+        </div>
+        <div>
+          <ul>
+            {this.state.searchObject.map(object => (
+              <button key={object} onClick={() => this.songInfo(object)}>
+                 <p> {object.name} </p>
+              </button> 
+            ))}
+          </ul>
         </div>
         <div>
           <button onClick={() => this.me()}>

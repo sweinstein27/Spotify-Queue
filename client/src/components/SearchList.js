@@ -3,15 +3,16 @@ import SearchListContainer from '../containers/SearchListContainer'
 import Search from './Search';
 
 const SearchList = props => {
-    props.searchObject.forEach(searchObject => {
+    props.searchObject.map(Object => {
         debugger
-            return(
-                <div>
-                  Song name: {searchObject.name} 
-                  Artist: {searchObject.artists[0].name}
-                  ID: {searchObject.id}
-                </div>
-             )
+            // return(
+            //     // <div>
+            //     //   Song name: {Object.name} 
+            //     //   Artist: {Object.artists[0].name}
+            //     //   ID: {Object.id}
+            //     // </div>
+            //     "hi"
+            //  )
         
     });
     
