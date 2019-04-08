@@ -5,6 +5,8 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import $ from 'jquery';
 import SearchList from '../components/SearchList'
 import Search from '../components/Search'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 
 const spotifyApi = new SpotifyWebApi();
 var trackID;
@@ -155,17 +157,20 @@ class SearchListContainer extends Component {
     })
   }
 
-  songInfo(object){
-   debugger
-  }
+  // songInfo(object){
+  //  debugger
+  // }
+
+ 
 
     componentDidMount(){
         this.search()
     }
   
-
+    
   render() {
     return (
+      <Router>
       <div className="App">
         <a href='http://localhost:8888' > Login to Spotify </a>
         <div>
@@ -220,14 +225,14 @@ class SearchListContainer extends Component {
         </div>
         <div>
           <button onClick={() => this.search()}>
-            Find Song
+          <Link to="/search">Search</Link>
           </button>
         </div>
         <div>
           <ul>
             {this.state.searchObject.map(object => (
-              <button key={object} onClick={() => this.songInfo(object)}>
-                 <p> {object.name} </p>
+              <button>
+                 <Link to="/search">{object.name}</Link>
               </button> 
             ))}
           </ul>
@@ -239,7 +244,10 @@ class SearchListContainer extends Component {
         </div>
         
       </div>
+      <Route path="/search/" component={Search} />
       
+      
+      </Router>
     );
   }
 }
