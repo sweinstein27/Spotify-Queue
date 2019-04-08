@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchListContainer from '../containers/SearchListContainer'
+import HomeContainer from '../containers/HomeContainer'
 import Search from './Search';
 
 const SearchList = props => {

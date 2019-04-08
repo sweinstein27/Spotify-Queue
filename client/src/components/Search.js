@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import SearchList from './SearchList';
+import SearchContainer from '../containers/SearchContainer'
 
 class Search extends Component {
 
@@ -12,15 +14,13 @@ class Search extends Component {
   }
 
   render() {
-    return (
+    return(
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" value={this.state.query} onChange={event => this.setState({query: event.target.value})} />
-        </form>
+          <SearchContainer />
       </div>
-    )
+  )
   }
 
 }
 
-export default Search
+export default Search;

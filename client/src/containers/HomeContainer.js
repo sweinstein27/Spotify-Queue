@@ -5,7 +5,7 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import $ from 'jquery';
 import SearchList from '../components/SearchList'
 import Search from '../components/Search'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 
 
 const spotifyApi = new SpotifyWebApi();
@@ -16,7 +16,7 @@ var searchObject;
 var token
 
 
-class SearchListContainer extends Component {
+class HomeContainer extends Component {
   constructor(){
     super();
     const params = this.getHashParams();
@@ -170,7 +170,6 @@ class SearchListContainer extends Component {
     
   render() {
     return (
-      <Router>
       <div className="App">
         <a href='http://localhost:8888' > Login to Spotify </a>
         <div>
@@ -224,32 +223,14 @@ class SearchListContainer extends Component {
           </button>
         </div>
         <div>
-          <button onClick={() => this.search()}>
-          <Link to="/search">Search</Link>
-          </button>
-        </div>
-        <div>
-          <ul>
-            {this.state.searchObject.map(object => (
-              <button>
-                 <Link to="/search">{object.name}</Link>
-              </button> 
-            ))}
-          </ul>
-        </div>
-        <div>
           <button onClick={() => this.me()}>
             User Info
           </button>
         </div>
         
       </div>
-      <Route path="/search/" component={Search} />
-      
-      
-      </Router>
     );
   }
 }
 
-export default SearchListContainer;
+export default HomeContainer;
