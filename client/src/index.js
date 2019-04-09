@@ -6,6 +6,15 @@ import Search from "./components/Search";
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import SearchListContainer from './containers/HomeContainer'
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import TokensReducer from './reducers/TokensReducer'
+import HomeContainer from './containers/HomeContainer';
+
+const store = createStore(
+  TokensReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 /* Add basic styling for NavLinks */
 const link = {
@@ -50,6 +59,9 @@ ReactDOM.render((
             <Route exact path="/search" component={Search} />
         </React.Fragment>
     </Router>), 
+    <Provider store={store}>
+      <HomeContainer />
+    </Provider>,
     document.getElementById('container')
 );
 

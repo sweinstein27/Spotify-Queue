@@ -5,7 +5,8 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import $ from 'jquery';
 import SearchList from '../components/SearchList'
 import Search from '../components/Search'
-
+import { connect } from 'react-redux';
+import { addToken } from './actions/tokens';
 
 
 const spotifyApi = new SpotifyWebApi();
@@ -13,7 +14,7 @@ var trackID;
 var ID;
 var trackProgress;
 var searchObject;
-var token
+var token;
 
 
 class HomeContainer extends Component {
@@ -24,6 +25,7 @@ class HomeContainer extends Component {
     if (token) {
       spotifyApi.setAccessToken(token);
     }
+    this.saveToken()
     this.state = {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', albumArt: '' },
@@ -32,9 +34,18 @@ class HomeContainer extends Component {
         bpm: ""
       },
       searchObject: [],
-      selectedSongID: ""
+      selectedSongID: "",
+      tokens: ""
     }
   }
+  saveToken(){
+    this.props.addToken(token);
+    this.setState({
+      token: token
+    })
+  }
+
+
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -164,7 +175,7 @@ class HomeContainer extends Component {
  
 
     componentDidMount(){
-        this.search()
+      this.props.addToken();
     }
   
     
@@ -233,4 +244,6 @@ class HomeContainer extends Component {
   }
 }
 
-export default HomeContainer;
+
+
+export default connect(state => ({ tokens: state.tokens }), { addToken })(HomeContainer);
