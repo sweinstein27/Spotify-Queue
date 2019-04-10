@@ -6,7 +6,7 @@ import $ from 'jquery';
 import SearchList from '../components/SearchList'
 import Search from '../components/Search'
 import { connect } from 'react-redux';
-import { addToken } from './actions/tokens';
+import { addToken } from '../actions/tokens';
 
 
 const spotifyApi = new SpotifyWebApi();
@@ -38,12 +38,7 @@ class HomeContainer extends Component {
       tokens: ""
     }
   }
-  saveToken(){
-    this.props.addToken(token);
-    this.setState({
-      token: token
-    })
-  }
+  
 
 
   getHashParams() {

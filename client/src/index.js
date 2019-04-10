@@ -1,68 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import Home from './components/Home';
-import Search from "./components/Search";
-import * as serviceWorker from './serviceWorker';
-import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
-import SearchListContainer from './containers/HomeContainer'
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import TokensReducer from './reducers/TokensReducer'
-import HomeContainer from './containers/HomeContainer';
+import React from "react"
+import ReactDOM from "react-dom"
 
-const store = createStore(
-  TokensReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+import Layout from "./components/Layout"
 
-/* Add basic styling for NavLinks */
-const link = {
-    width: '100px',
-    padding: '12px',
-    margin: '0 6px 6px',
-    background: 'blue',
-    textDecoration: 'none',
-    color: 'white',
-  }
-   
-  /* add the navbar component */
-  const Navbar = () =>
-    <div>
-      <NavLink
-        to="/"
-        /* set exact so it knows to only set activeStyle when route is deeply equal to link */
-        exact
-        /* add styling to Navlink */
-        style={link}
-        /* add prop for activeStyle */
-        activeStyle={{
-          background: 'darkblue'
-        }}
-      >Home</NavLink>
-      <NavLink
-        to="/search"
-        exact
-        style={link}
-        activeStyle={{
-          background: 'darkblue'
-        }}
-      >Search</NavLink>
-    </div>;
+const app = document.getElementById('app')
 
-
-ReactDOM.render((
-    <Router>
-        <React.Fragment>
-            <Navbar />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/search" component={Search} />
-        </React.Fragment>
-    </Router>), 
-    <Provider store={store}>
-      <HomeContainer />
-    </Provider>,
-    document.getElementById('container')
-);
-
-
+ReactDOM.render( <Layout />, app);
